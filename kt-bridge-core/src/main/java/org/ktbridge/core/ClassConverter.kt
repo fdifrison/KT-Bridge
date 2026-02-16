@@ -26,19 +26,19 @@ class ClassConverter {
         else -> kPropToKTField(kProp)
     }
 
-    private fun kPropToKTCollection(kProp: KProperty1<out Any, *>): KTCollection = KTCollection(
+    private fun kPropToKTCollection(kProp: KProperty1<out Any, *>): KTClassifier = KTCollection(
         name = kProp.name,
         type = KTCollectionType.valueOf(kProp.type()),
-        of = kProp.returnType.arguments.map { KTCollection.KTInnerField(innerType = it) },
+        of = kProp.returnType.arguments.map { KTCollection.KTInnerField(innerType = it) }, // handle arguments > 1 for Maps
         isNullable = kProp.isNullable(),
-    )
+    ).validate()
 
 
-    private fun kPropToKTField(kProp: KProperty1<out Any, *>): KTField = KTField(
+    private fun kPropToKTField(kProp: KProperty1<out Any, *>): KTClassifier = KTField(
         name = kProp.name,
         type = KTypeConversion.valueOf(kProp.type()),
         isNullable = kProp.isNullable(),
-    )
+    ).validate()
 
 }
 

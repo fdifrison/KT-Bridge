@@ -7,11 +7,19 @@ import kotlin.reflect.KTypeProjection
 data class KTCollection(
     val name: String,
     val type: KTCollectionType,
-    val of: List<KTClassifier> = emptyList(),
+    val of: List<KTInnerField> = emptyList(),
     val isNullable: Boolean,
 ) : KTClassifier {
 
-    class KTInnerField(innerType: KTypeProjection) : KTClassifier {
+    override fun validate(): KTClassifier {
+        when (type) {
+            KTCollectionType.List, KTCollectionType.Set -> require(of.size == 1)
+            KTCollectionType.Map -> require(of.size == 2)
+        }
+        return this
+    }
+
+    class KTInnerField(innerType: KTypeProjection) {
 
         val type: String
         val isNullable: Boolean

@@ -6,4 +6,8 @@ data class KTField(
     val name: String,
     val type: KTypeConversion,
     val isNullable: Boolean,
-) : KTClassifier
+) : KTClassifier {
+    override fun validate(): KTClassifier {
+        return this
+    }
+}
