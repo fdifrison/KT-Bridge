@@ -4,6 +4,17 @@
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
+        <compositeConfiguration>
+          <compositeBuild compositeDefinitionSource="SCRIPT">
+            <builds>
+              <build path="$PROJECT_DIR$/../kt-bridge-integration-test" name="kt-bridge-integration-test">
+                <projects>
+                  <project path="$PROJECT_DIR$/../kt-bridge-integration-test" />
+                </projects>
+              </build>
+            </builds>
+          </compositeBuild>
+        </compositeConfiguration>
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="gradleHome" value="" />
         <option name="modules">
@@ -11,7 +22,9 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/kt-bridge-annotations" />
             <option value="$PROJECT_DIR$/kt-bridge-core" />
-            <option value="$PROJECT_DIR$/kt-bridge-sample" />
+            <option value="$PROJECT_DIR$/kt-bridge-gradle-plugin" />
+            <option value="$PROJECT_DIR$/kt-bridge-test" />
+            <option value="$PROJECT_DIR$/../kt-bridge-integration-test" />
           </set>
         </option>
       </GradleProjectSettings>

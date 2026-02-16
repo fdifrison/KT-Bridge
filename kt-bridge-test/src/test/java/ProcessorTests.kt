@@ -5,17 +5,21 @@ import org.ktbridge.core.transformer.TsTransformer
 import org.ktbridge.sample.processor.AllCollections
 import org.ktbridge.sample.processor.AllNonNullTypes
 import org.ktbridge.sample.processor.AllNullableTypes
+import java.io.File
+import java.net.URLClassLoader
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class ProcessorTests {
 
     private val converter = ClassConverter()
+    private val root = File("build/classes/kotlin/main")
+    private val loader = URLClassLoader(arrayOf(root.toURI().toURL()))
 
 
     @Test
     fun `should process correctly non nullable types`() {
-        val clazz = ClassLoader().findTargetClass(AllNonNullTypes::class.java.name)
+        val clazz = ClassLoader(loader = loader).findTargetClass(AllNonNullTypes::class.java.name)
         val kClazz = ClassProcessor(converter, TsTransformer()).process(clazz)
         print(kClazz)
         assertEquals(
@@ -37,7 +41,7 @@ class ProcessorTests {
 
     @Test
     fun `should process correctly  nullable types`() {
-        val clazz = ClassLoader().findTargetClass(AllNullableTypes::class.java.name)
+        val clazz = ClassLoader(loader = loader).findTargetClass(AllNullableTypes::class.java.name)
         val kClazz = ClassProcessor(converter, TsTransformer()).process(clazz)
         print(kClazz)
         assertEquals(
@@ -61,7 +65,7 @@ class ProcessorTests {
 
     @Test
     fun `should process correctly collection types`() {
-        val clazz = ClassLoader().findTargetClass(AllCollections::class.java.name)
+        val clazz = ClassLoader(loader = loader).findTargetClass(AllCollections::class.java.name)
         val kClazz = ClassProcessor(converter, TsTransformer()).process(clazz)
         print(kClazz)
         assertEquals(

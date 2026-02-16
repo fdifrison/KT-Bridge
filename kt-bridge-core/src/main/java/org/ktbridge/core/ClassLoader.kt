@@ -4,11 +4,10 @@ import org.ktbridge.core.utils.mapAndFilter
 import java.io.File
 import java.net.URLClassLoader
 
-class ClassLoader(rootDirPath: String = "build/classes/kotlin/main") {
+class ClassLoader(rootDirPath: String = "build/classes/kotlin/main", private val loader: URLClassLoader) {
 
     private val root = File(rootDirPath)
     private val scanner = ClassScanner(root)
-    private val loader = URLClassLoader(arrayOf(root.toURI().toURL()))
 
     fun findTargetClasses(subPackageName: String = ""): List<Class<*>> {
         return scanner.findClassFiles(subPackageName).mapAndFilter(root, loader::loadClass)

@@ -13,4 +13,6 @@ plugins {
 rootProject.name = "KT-Bridge"
 include("kt-bridge-core")
 include("kt-bridge-annotations")
-include("kt-bridge-sample")
+include("kt-bridge-gradle-plugin")
+include("kt-bridge-test")
+includeBuild("../kt-bridge-integration-test")
