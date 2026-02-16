@@ -14,6 +14,9 @@ data class AllNonNullTypes(
     val stringProp: String,
     val uuidProp: UUID,
     val localDateProp: LocalDate,
-    val anyProp: Any
-)
+    val anyProp: Any,
+    val customProp: User
+){
+    class User
+}
 

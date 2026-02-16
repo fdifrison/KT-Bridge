@@ -36,7 +36,7 @@ class ClassConverter {
 
     private fun kPropToKTField(kProp: KProperty1<out Any, *>): KTClassifier = KTField(
         name = kProp.name,
-        type = KTypeConversion.valueOf(kProp.type()),
+        type = KTypeConversion.toTypeScriptType(kProp.type()),
         isNullable = kProp.isNullable(),
     ).validate()
 

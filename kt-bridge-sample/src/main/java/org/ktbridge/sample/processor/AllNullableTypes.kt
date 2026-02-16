@@ -16,6 +16,10 @@ data class AllNullableTypes(
     val listNullableProp: List<String?>,
     val uuidProp: UUID?,
     val nullableLocalDateProp: LocalDate?,
-    val anyProp: Any?
-)
+    val anyProp: Any?,
+    val customProp: User?,
+){
+    class User
+}
+
 

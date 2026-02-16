@@ -12,7 +12,5 @@ data class AllCollections(
     val listWithNullableElementsProp: List<String?>,
     val nullableListProp: List<String>?
 ) {
-    class User {
-
-    }
+    class User
 }

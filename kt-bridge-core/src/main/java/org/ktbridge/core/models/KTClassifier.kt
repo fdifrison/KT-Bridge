@@ -1,5 +1,5 @@
 package org.ktbridge.core.models
 
-interface KTClassifier {
+sealed interface KTClassifier {
     fun  validate() : KTClassifier
 }

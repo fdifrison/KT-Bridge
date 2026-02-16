@@ -1,10 +1,8 @@
 package org.ktbridge.core.models
 
-import org.ktbridge.core.enums.KTypeConversion
-
 data class KTField(
     val name: String,
-    val type: KTypeConversion,
+    val type: String,
     val isNullable: Boolean,
 ) : KTClassifier {
     override fun validate(): KTClassifier {

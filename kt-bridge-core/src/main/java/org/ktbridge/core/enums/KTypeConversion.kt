@@ -10,5 +10,14 @@ enum class KTypeConversion(val typeScriptType: TypeScriptType) {
     Boolean(TypeScriptType.boolean),
     Any(TypeScriptType.any),
     UUID(TypeScriptType.string),
-    LocalDate(TypeScriptType.string),
+    LocalDate(TypeScriptType.string);
+
+    companion object {
+        fun toTypeScriptType(type: String) = KTypeConversion.entries
+            .find { it.name == type }
+            ?.typeScriptType
+            ?.name
+            ?: type
+    }
 }
+

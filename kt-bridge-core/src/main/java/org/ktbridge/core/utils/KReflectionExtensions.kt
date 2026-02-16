@@ -14,5 +14,5 @@ fun KProperty1<out Any, *>.isMap(nullable: Boolean): Boolean =
 fun KProperty1<out Any, *>.isSet(nullable: Boolean): Boolean =
     this.returnType.isSubtypeOf(Set::class.starProjectedType.withNullability(nullable))
 
-fun KProperty1<out Any, *>.type(): String = this.returnType.classifier.toString().substringAfterLast(".")
+fun KProperty1<out Any, *>.type(): String = this.returnType.classifier.toString().substringAfterLast(".").substringAfterLast("$")
 fun KProperty1<out Any, *>.isNullable(): Boolean = this.returnType.isMarkedNullable
