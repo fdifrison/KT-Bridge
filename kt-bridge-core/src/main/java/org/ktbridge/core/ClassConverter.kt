@@ -9,9 +9,7 @@ import org.ktbridge.core.models.KTField
 import org.ktbridge.core.utils.*
 import kotlin.reflect.KClass
 import kotlin.reflect.KProperty1
-import kotlin.reflect.full.isSubtypeOf
 import kotlin.reflect.full.memberProperties
-import kotlin.reflect.full.starProjectedType
 
 
 class ClassConverter {
@@ -31,14 +29,14 @@ class ClassConverter {
     private fun kPropToKTCollection(kProp: KProperty1<out Any, *>): KTCollection = KTCollection(
         name = kProp.name,
         type = KTCollectionType.valueOf(kProp.type()),
-        of = KTCollection.KTInnerField(innerType = kProp.returnType),
+        of = kProp.returnType.arguments.map { KTCollection.KTInnerField(innerType = it) },
         isNullable = kProp.isNullable(),
     )
+
 
     private fun kPropToKTField(kProp: KProperty1<out Any, *>): KTField = KTField(
         name = kProp.name,
         type = KTypeConversion.valueOf(kProp.type()),
-        isCollection = kProp.returnType.isSubtypeOf(List::class.starProjectedType),
         isNullable = kProp.isNullable(),
     )
 
