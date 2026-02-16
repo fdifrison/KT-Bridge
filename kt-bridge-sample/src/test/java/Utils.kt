@@ -1,0 +1,5 @@
+fun Any.prettyPrint(): String = this.toString()
+    .replace("(", "(\n  ")
+    .replace("), K", "\n), \nK")
+    .replace("[", "[\n  ")
+    .replace("]", "\n]")

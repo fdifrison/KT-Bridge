@@ -1,6 +1,6 @@
 package org.ktbridge.core.models
 
-data class KClazz(
+data class KTClass(
     val className: String,
-    val properties: List<KFieldz>,
+    val properties: List<KTClassifier>,
 )

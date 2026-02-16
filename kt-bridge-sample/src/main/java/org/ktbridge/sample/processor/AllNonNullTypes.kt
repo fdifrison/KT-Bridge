@@ -12,7 +12,6 @@ data class AllNonNullTypes(
     val bigDecimalProp: BigDecimal,
     val booleanProp: Boolean,
     val stringProp: String,
-    val listProp: List<String>,
     val uuidProp: UUID,
     val localDateProp: LocalDate,
     val anyProp: Any
