@@ -21,7 +21,7 @@ class ScannerTests {
 
     @Test
     fun `should find only annotated class in the specific build folder`() {
-        val foundClasses = ClassLoader(loader = loader).findTargetClasses(subPackageName = "content")
+        val foundClasses = ClassLoader(loader = loader).findTargetClasses(subPackageName = listOf("content"))
         assertTrue(foundClasses.contains(CreateContentDTO::class.java))
         assertFalse(foundClasses.contains(CreateTerritoryDTO::class.java))
     }

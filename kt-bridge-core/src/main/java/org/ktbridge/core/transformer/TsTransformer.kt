@@ -10,6 +10,7 @@ import org.ktbridge.core.models.KTField
 class TsTransformer(val sb: StringBuilder = StringBuilder()) : Transformer {
 
     override fun transform(clazz: KTClass): String {
+        sb.clear()
         sb.appendLine("export interface ${clazz.className} {")
         clazz.properties.forEach { transform(it) }
         return sb.appendLine("}").toString()

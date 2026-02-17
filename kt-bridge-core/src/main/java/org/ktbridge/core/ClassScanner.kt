@@ -9,12 +9,20 @@ class ClassScanner(private var root: File) {
             .toList()
     }
 
-    fun findClassFiles(subPackageName: String = ""): List<File> {
-        if (subPackageName.isNotBlank()) {
-            root = root.walkTopDown()
-                .first { it.isDirectory && it.name.equals(subPackageName, ignoreCase = true) }
+    fun findClassFiles(root: File): List<File> {
+        return root.walkTopDown()
+            .filter { it.isFile && it.extension == "class" }
+            .toList()
+    }
+
+    fun findClassFiles(subPackageName: List<String> = emptyList()): List<File> {
+        var files: List<File> = emptyList()
+        subPackageName.forEach { packageName ->
+            val packageRoot = root.walkTopDown().first { it.isDirectory && it.name.equals(packageName, ignoreCase = true) }
+            files = files.plus(findClassFiles(packageRoot))
+            println("Found $files")
         }
-        return findClassFiles()
+        return files
     }
 
     fun findClassFile(filename: String): List<File> {

@@ -3,7 +3,6 @@ package org.ktbridge.plugin
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.DirectoryProperty
-import org.gradle.api.provider.ListProperty
 import org.gradle.api.tasks.*
 import org.ktbridge.core.ClassConverter
 import org.ktbridge.core.ClassLoader
@@ -16,7 +15,7 @@ abstract class KBridgeTask : DefaultTask() {
 
     @get:Input
     @get:Optional
-    abstract val packages: ListProperty<String>
+    abstract var packages: List<String>
 
     @get:OutputDirectory
     abstract val outputDir: DirectoryProperty
@@ -28,19 +27,17 @@ abstract class KBridgeTask : DefaultTask() {
     @TaskAction
     fun generate() {
         val outputFolder = outputDir.get().asFile
-        if (!outputFolder.exists()) outputFolder.mkdirs()
         println("Target directory: ${outputFolder.absolutePath}")
 
         val inputFolder = project.layout.buildDirectory.dir("classes/kotlin/main").get().asFile
 
         println("Scanning directory: ${inputFolder.absolutePath}")
         val urls = (classpath.files + inputFolder).map { it.toURI().toURL() }.toTypedArray()
-        println("Provided urls:$urls")
+        println("Provided urls: $urls")
         val loader = URLClassLoader(urls, this::class.java.classLoader)
 
-
-        val classes = ClassLoader(loader = loader)
-            .findTargetClasses("scanner") // TODO change to list of string
+        val scannerLoader = ClassLoader(inputFolder.absolutePath, loader)
+        val classes = scannerLoader.findTargetClasses(packages  )
         println("Found ${classes.size} classes")
         val processor = ClassProcessor(ClassConverter(), TsTransformer())
         classes.forEach { clazz ->

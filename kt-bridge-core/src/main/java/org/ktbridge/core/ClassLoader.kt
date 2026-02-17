@@ -9,7 +9,7 @@ class ClassLoader(rootDirPath: String = "build/classes/kotlin/main", private val
     private val root = File(rootDirPath)
     private val scanner = ClassScanner(root)
 
-    fun findTargetClasses(subPackageName: String = ""): List<Class<*>> {
+    fun findTargetClasses(subPackageName: List<String> = emptyList()): List<Class<*>> {
         return scanner.findClassFiles(subPackageName).mapAndFilter(root, loader::loadClass)
     }
 
