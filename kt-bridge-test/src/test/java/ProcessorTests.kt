@@ -5,6 +5,7 @@ import org.ktbridge.core.transformer.TsTransformer
 import org.ktbridge.sample.processor.AllCollections
 import org.ktbridge.sample.processor.AllNonNullTypes
 import org.ktbridge.sample.processor.AllNullableTypes
+import org.ktbridge.sample.processor.SimpleEnum
 import java.io.File
 import java.net.URLClassLoader
 import kotlin.test.Test
@@ -76,6 +77,21 @@ class ProcessorTests {
 	mapProp: { [key: string]: number };
 	nullableListProp: string[];
 	setProp: number[];
+}
+"""
+        )
+    }
+
+    @Test
+    fun `should process correctly enum types`() {
+        val clazz = ClassLoader(loader = loader).findTargetClass(SimpleEnum::class.java.name)
+        val kClazz = ClassProcessor(converter, TsTransformer()).process(clazz)
+        print(kClazz)
+        assertEquals(
+            kClazz, """export enum SimpleEnum {
+	ONE = 'ONE',
+	TWO = 'TWO',
+	THREE = 'THREE',
 }
 """
         )

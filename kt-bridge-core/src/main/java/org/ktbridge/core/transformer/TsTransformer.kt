@@ -2,10 +2,7 @@ package org.ktbridge.core.transformer
 
 import org.ktbridge.core.enums.KTCollectionType
 import org.ktbridge.core.enums.KTypeConversion
-import org.ktbridge.core.models.KTClass
-import org.ktbridge.core.models.KTClassifier
-import org.ktbridge.core.models.KTCollection
-import org.ktbridge.core.models.KTField
+import org.ktbridge.core.models.*
 
 class TsTransformer(val sb: StringBuilder = StringBuilder()) : Transformer {
 
@@ -13,6 +10,13 @@ class TsTransformer(val sb: StringBuilder = StringBuilder()) : Transformer {
         sb.clear()
         sb.appendLine("export interface ${clazz.className} {")
         clazz.properties.forEach { transform(it) }
+        return sb.appendLine("}").toString()
+    }
+
+    override fun transform(clazz: KTEnum): String {
+        sb.clear()
+        sb.appendLine("export enum ${clazz.className} {")
+        clazz.properties.forEach { sb.appendLine("\t$it = '$it',") }
         return sb.appendLine("}").toString()
     }
 

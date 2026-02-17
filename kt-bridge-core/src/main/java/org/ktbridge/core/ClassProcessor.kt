@@ -5,8 +5,17 @@ import org.ktbridge.core.transformer.Transformer
 class ClassProcessor(val converter: ClassConverter, val transformer: Transformer) {
 
     fun process(clazz: Class<*>): String {
-        val kTClass = converter.convert(clazz.kotlin)
-        return transformer.transform(kTClass)
+        when {
+            clazz.isEnum -> {
+                val enum = converter.convert(clazz)
+                return transformer.transform(enum)
+            }
+
+            else -> {
+                val klass = converter.convert(clazz.kotlin)
+                return transformer.transform(klass)
+            }
+        }
     }
 
 }
