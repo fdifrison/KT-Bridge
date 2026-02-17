@@ -20,9 +20,9 @@ data class KTCollection(
         return this
     }
 
-    class KTInnerField(innerType: KTypeProjection) {
+    class KTInnerField(innerType: KTypeProjection) : Field {
 
-        val type: String
+        override val type: String
         val isNullable: Boolean
 
         init {

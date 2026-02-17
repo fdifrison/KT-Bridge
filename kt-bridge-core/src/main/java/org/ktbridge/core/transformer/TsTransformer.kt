@@ -9,7 +9,7 @@ class TsTransformer(val sb: StringBuilder = StringBuilder()) : Transformer {
 
     override fun transform(clazz: KTClass): String {
         sb.clear()
-        addImports(clazz)
+        if (clazz.properties.isNotEmpty()) addImports(clazz)
         sb.appendLine("export interface ${clazz.className} {")
         clazz.properties.forEach { transform(it) }
         return sb.appendLine("}").toString()
@@ -25,15 +25,15 @@ class TsTransformer(val sb: StringBuilder = StringBuilder()) : Transformer {
     private fun addImports(clazz: KTClass) {
         clazz.properties.forEach { prop ->
             when (prop) {
-                is KTField -> {
-                    if (!TypeScriptType.isBaseType(prop.type)) sb.appendLine("import {${prop.type}} from \"./${prop.type}\";")
-                }
-                is KTCollection -> prop.of.forEach {
-                    if (!TypeScriptType.isBaseType(it.type)) sb.appendLine("import {${it.type}} from \"./${it.type}\";")
-                }
+                is KTField -> if (!TypeScriptType.isBaseType(prop.type)) import(prop)
+                is KTCollection -> prop.of.forEach { if (!TypeScriptType.isBaseType(it.type)) import(it) }
             }
         }
         sb.appendLine()
+    }
+
+    private fun import(prop: Field) {
+        sb.appendLine("import {${prop.type}} from \"./${prop.type}\";")
     }
 
 
