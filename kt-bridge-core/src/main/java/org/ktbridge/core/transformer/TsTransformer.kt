@@ -2,12 +2,14 @@ package org.ktbridge.core.transformer
 
 import org.ktbridge.core.enums.KTCollectionType
 import org.ktbridge.core.enums.KTypeConversion
+import org.ktbridge.core.enums.TypeScriptType
 import org.ktbridge.core.models.*
 
 class TsTransformer(val sb: StringBuilder = StringBuilder()) : Transformer {
 
     override fun transform(clazz: KTClass): String {
         sb.clear()
+        addImports(clazz)
         sb.appendLine("export interface ${clazz.className} {")
         clazz.properties.forEach { transform(it) }
         return sb.appendLine("}").toString()
@@ -18,6 +20,20 @@ class TsTransformer(val sb: StringBuilder = StringBuilder()) : Transformer {
         sb.appendLine("export enum ${clazz.className} {")
         clazz.properties.forEach { sb.appendLine("\t$it = '$it',") }
         return sb.appendLine("}").toString()
+    }
+
+    private fun addImports(clazz: KTClass) {
+        clazz.properties.forEach { prop ->
+            when (prop) {
+                is KTField -> {
+                    if (!TypeScriptType.isBaseType(prop.type)) sb.appendLine("import {${prop.type}} from \"./${prop.type}\";")
+                }
+                is KTCollection -> prop.of.forEach {
+                    if (!TypeScriptType.isBaseType(it.type)) sb.appendLine("import {${it.type}} from \"./${it.type}\";")
+                }
+            }
+        }
+        sb.appendLine()
     }
 
 

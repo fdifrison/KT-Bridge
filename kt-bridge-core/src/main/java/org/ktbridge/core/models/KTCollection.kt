@@ -1,6 +1,7 @@
 package org.ktbridge.core.models
 
 import org.ktbridge.core.enums.KTCollectionType
+import org.ktbridge.core.enums.KTypeConversion
 import kotlin.reflect.KType
 import kotlin.reflect.KTypeProjection
 
@@ -26,7 +27,7 @@ data class KTCollection(
 
         init {
             val kType = innerType.type ?: throw NoSuchElementException()
-            type = getType(kType)
+            type = KTypeConversion.toTypeScriptType(getType(kType))
             isNullable = kType.isMarkedNullable
         }
 

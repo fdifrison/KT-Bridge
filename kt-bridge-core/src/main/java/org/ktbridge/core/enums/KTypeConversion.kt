@@ -18,6 +18,10 @@ enum class KTypeConversion(val typeScriptType: TypeScriptType) {
             ?.typeScriptType
             ?.name
             ?: type
+
+        fun isBaseType(kotlinTypeName: String): Boolean {
+            return entries.any { it.name.equals(kotlinTypeName, ignoreCase = true) }
+        }
     }
 }
 

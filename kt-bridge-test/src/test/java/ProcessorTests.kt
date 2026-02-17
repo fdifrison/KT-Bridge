@@ -24,7 +24,9 @@ class ProcessorTests {
         val kClazz = ClassProcessor(converter, TsTransformer()).process(clazz)
         print(kClazz)
         assertEquals(
-            kClazz, """export interface AllNonNullTypes {
+            kClazz, """import {User} from "./User";
+
+export interface AllNonNullTypes {
 	anyProp: any;
 	bigDecimalProp: number;
 	booleanProp: boolean;
@@ -46,7 +48,9 @@ class ProcessorTests {
         val kClazz = ClassProcessor(converter, TsTransformer()).process(clazz)
         print(kClazz)
         assertEquals(
-            kClazz, """export interface AllNullableTypes {
+            kClazz, """import {User} from "./User";
+
+export interface AllNullableTypes {
 	anyProp?: any;
 	bigDecimalProp?: number;
 	booleanProp?: boolean;
@@ -70,7 +74,9 @@ class ProcessorTests {
         val kClazz = ClassProcessor(converter, TsTransformer()).process(clazz)
         print(kClazz)
         assertEquals(
-            kClazz, """export interface AllCollections {
+            kClazz, """import {User} from "./User";
+
+export interface AllCollections {
 	listOfCustom: User[];
 	listProp: string[];
 	listWithNullableElementsProp: (string | null)[];
