@@ -28,25 +28,34 @@ abstract class KBridgeTask : DefaultTask() {
     fun generate() {
         val outputFolder = outputDir.get().asFile
         println("Target directory: ${outputFolder.absolutePath}")
-
         val inputFolder = project.layout.buildDirectory.dir("classes/kotlin/main").get().asFile
-
         println("Scanning directory: ${inputFolder.absolutePath}")
-        val urls = (classpath.files + inputFolder).map { it.toURI().toURL() }.toTypedArray()
-        println("Provided urls: $urls")
-        val loader = URLClassLoader(urls, this::class.java.classLoader)
 
-        val scannerLoader = ClassLoader(inputFolder.absolutePath, loader)
-        val classes = scannerLoader.findTargetClasses(packages  )
+        val scannerLoader = initScanner(inputFolder)
+        val classes = scannerLoader.findTargetClasses(packages)
         println("Found ${classes.size} classes")
+
         val processor = ClassProcessor(ClassConverter(), TsTransformer())
         classes.forEach { clazz ->
             println("Processing ${clazz.canonicalName}")
             val tsContent = processor.process(clazz)
+            val packageName = clazz.`package`.name
+            val packagePath = packageName.replace(".", File.separator)
+            val targetSubFolder = File(outputFolder, packagePath)
+            if (!targetSubFolder.exists()) {
+                targetSubFolder.mkdirs()
+            }
             val fileName = "${clazz.simpleName}.ts"
-            val outputFile = File(outputFolder, fileName)
+            val outputFile = File(targetSubFolder, fileName)
             outputFile.writeText(tsContent)
             println("K-Bridge generated: ${outputFile.absolutePath}")
         }
+    }
+
+    private fun initScanner(inputFolder: File): ClassLoader {
+        val urls = (classpath.files + inputFolder).map { it.toURI().toURL() }.toTypedArray()
+        val loader = URLClassLoader(urls, this::class.java.classLoader)
+        val scannerLoader = ClassLoader(inputFolder.absolutePath, loader)
+        return scannerLoader
     }
 }
